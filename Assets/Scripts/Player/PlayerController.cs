@@ -5,92 +5,64 @@ using Core.StateMachine;
 
 public class PlayerController : MonoBehaviour
 {
-    public enum PlayerStates
-    {
-        IDLE,
-        WALKING,
-        JUMPING,
-    }
+    public Animator animator;
 
-    public StateMachine<PlayerStates> stateMachine;
-
-    public Rigidbody myRigidbody;
+    public CharacterController characterController;
 
     [Header("Physics")]
-    public float jumpForce = 2f;
-    public float speedX = 0f;
-    public float speedZ = 0f;
-    public float speedMod = 2f;
+    public float speed = 1f;
+    public float turnSpeed = 1f;
+    public float jumpSpeed = 15f;
+    public float gravity = 9.8f;
 
-    [Header("Jump Collision Check")]
-    public Collider collider3d;
-    public float distToGround;
-    public float spaceToGround = .1f;
+    [Header("Run Setup")]
+    public float runSpeed = 1.5f;
+    public KeyCode keyRun = KeyCode.LeftShift;
 
-    // Start is called before the first frame update
-    void Awake()
+    private float _vSpeed = 0f;
+
+    private void Update()
     {
-        if (collider3d != null)
-            distToGround = collider3d.bounds.extents.y;
+        var turnFactor = Input.GetAxis("Horizontal") * turnSpeed * Time.deltaTime;
+        transform.Rotate(0, turnFactor, 0);
 
-        stateMachine = new StateMachine<PlayerStates>();
+        var inputAxisVertical = Input.GetAxis("Vertical");
+        var speedVector= transform.forward * inputAxisVertical * speed;
 
-        stateMachine.Init();
-        stateMachine.RegisterStates(PlayerStates.IDLE, new StateBase());
-        stateMachine.RegisterStates(PlayerStates.WALKING, new StateBase());
-        stateMachine.RegisterStates(PlayerStates.JUMPING, new StateBase());
+        // Updates _vSpeed value
+        Jump();
 
-        stateMachine.SwitchState(PlayerStates.IDLE);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        HandleMoviment();
-        HandleJump();
-
-        if (speedX == 0 && speedZ == 0 && IsGrounded())
-            stateMachine.SwitchState(PlayerStates.IDLE);
-    }
-
-    private bool IsGrounded()
-    {
-        Debug.DrawRay(transform.position, -Vector2.up, Color.green, distToGround + spaceToGround);
-
-        return Physics.Raycast(transform.position, -Vector2.up, distToGround + spaceToGround);
-    }
-
-    void HandleMoviment()
-    {
-        if (!IsGrounded()) return;
-
-        if (Input.GetKey(KeyCode.LeftArrow))
-            speedX = speedMod * 1;
-        else if (Input.GetKey(KeyCode.RightArrow))
-            speedX = speedMod * -1;
-        else
-            speedX = 0f;
-
-        if (Input.GetKey(KeyCode.UpArrow))
-            speedZ = speedMod * -1;
-        else if (Input.GetKey(KeyCode.DownArrow))
-            speedZ = speedMod * 1;
-        else
-            speedZ = 0f;
-
-        if (speedX != 0 || speedZ != 0)
-            stateMachine.SwitchState(PlayerStates.WALKING);
-
-        myRigidbody.velocity = new Vector3(speedX, myRigidbody.velocity.y, speedZ);
-    }
-
-    void HandleJump()
-    {
-        if (Input.GetKey(KeyCode.Space) && IsGrounded())
+        var isWalking = inputAxisVertical != 0;
+        if (isWalking)
         {
-            myRigidbody.velocity = Vector3.up * jumpForce;
-            stateMachine.SwitchState(PlayerStates.JUMPING);
+            if (Input.GetKey(keyRun))
+            {
+                speedVector *= runSpeed;
+                animator.speed = runSpeed;
+            }
+            else
+            {
+                animator.speed = 1f;
+            }
+        }
+
+        _vSpeed -= gravity * Time.deltaTime;
+        speedVector.y = _vSpeed;
+
+        characterController.Move(speedVector * Time.deltaTime);
+
+        animator.SetBool("Run", isWalking);
+    }
+
+    private void Jump()
+    {
+        if (characterController.isGrounded)
+        {
+            _vSpeed = 0;
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                _vSpeed = jumpSpeed;
+            }
         }
     }
-
 }
