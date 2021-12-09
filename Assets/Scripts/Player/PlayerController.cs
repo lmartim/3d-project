@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Core.StateMachine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IDamageable
 {
     public Animator animator;
 
@@ -18,6 +18,9 @@ public class PlayerController : MonoBehaviour
     [Header("Run Setup")]
     public float runSpeed = 1.5f;
     public KeyCode keyRun = KeyCode.LeftShift;
+
+    [Header("Flash")]
+    public List<FlashColor> flashColors;
 
     private float _vSpeed = 0f;
 
@@ -64,5 +67,15 @@ public class PlayerController : MonoBehaviour
                 _vSpeed = jumpSpeed;
             }
         }
+    }
+
+    public void Damage(float damage)
+    {
+        flashColors.ForEach(i => i.Flash());
+    }
+
+    public void Damage(float damage, Vector3 dir)
+    {
+        Damage(damage);
     }
 }

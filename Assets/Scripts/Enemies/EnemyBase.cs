@@ -10,9 +10,13 @@ namespace Enemy
     {
         public Collider enemyCollider;
         public FlashColor flashColor;
-        public float startLife = 10f;
 
+        public float startLife = 10f;
         private float _currentLife;
+
+        public bool lookAtPlayer = false;
+
+        private PlayerController _player;
 
         [Header("Animation")]
         [SerializeField] private AnimationBase _animationBase;
@@ -31,6 +35,11 @@ namespace Enemy
             Init();
         }
 
+        private void Start()
+        {
+            _player = GameObject.FindObjectOfType<PlayerController>();
+        }
+
         protected virtual void Init()
         {
             ResetLife();
@@ -39,7 +48,7 @@ namespace Enemy
 
         protected void ResetLife()
         {
-
+            _currentLife = startLife;
         }
 
         protected virtual void Kill() 
@@ -86,18 +95,35 @@ namespace Enemy
         }
         #endregion
 
-
-        private void Update()
+        public virtual void Update()
         {
             if (Input.GetKeyDown(KeyCode.T))
             {
                 OnDamage(5f);
             }
+
+            if (lookAtPlayer) transform.LookAt(_player.transform.position);
         }
 
         public void Damage(float damage)
         {
             OnDamage(damage);
+        }
+
+        public void Damage(float damage, Vector3 dir)
+        {
+            OnDamage(damage);
+            transform.DOMove(transform.position - dir, .1f);
+        }
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            PlayerController p = collision.transform.GetComponent<PlayerController>();
+
+            if (p != null)
+            {
+                p.Damage(1);
+            }
         }
     }
 }
