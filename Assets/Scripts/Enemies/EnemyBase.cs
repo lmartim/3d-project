@@ -118,11 +118,14 @@ namespace Enemy
 
         private void OnCollisionEnter(Collision collision)
         {
-            PlayerController p = collision.transform.GetComponent<PlayerController>();
-
-            if (p != null)
+            if (collision.gameObject.tag == "Player")
             {
-                p.Damage(1);
+                PlayerController p = collision.transform.GetComponent<PlayerController>();
+
+                if (p != null)
+                {
+                    p.healthBase.Damage(1);
+                }
             }
         }
     }

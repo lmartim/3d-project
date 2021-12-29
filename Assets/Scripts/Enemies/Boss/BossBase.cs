@@ -15,6 +15,7 @@ namespace Boss
         ATTACK,
         DEATH
     }
+
     public class BossBase : MonoBehaviour, IDamageable
     {
         [Header("Animation")]
@@ -36,8 +37,14 @@ namespace Boss
 
         private StateMachine<BossAction> _stateMachine;
 
+        private void OnValidate()
+        {
+            if (healthBase == null) healthBase = GetComponent<HealthBase>();
+        }
+
         private void Awake()
         {
+            OnValidate();
             Init();
         }
 
@@ -53,7 +60,7 @@ namespace Boss
 
             SwitchState(BossAction.WALK);
 
-            healthBase.OnKill += OnBossKill;
+            if (healthBase != null) healthBase.OnKill += OnBossKill;
         }
 
         private void OnBossKill(HealthBase h)
@@ -67,7 +74,7 @@ namespace Boss
 
             if (p != null)
             {
-                p.Damage(5);
+                //p.Damage(5);
             }
         }
 

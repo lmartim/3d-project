@@ -50,6 +50,7 @@ MonoBehaviour:
   enemyCollider: {fileID: 2552763778139142327}
   flashColor: {fileID: 7132256006410992657}
   startLife: 10
+  lookAtPlayer: 1
   _animationBase: {fileID: 2552763778139142330}
   startAnimationDuration: 0.2
   startAnimationEase: 27
@@ -5113,7 +5114,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5273636447198683800, guid: ed938cc29002fc144a13c67ce7871636, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.15
+      value: 3.727
       objectReference: {fileID: 0}
     - target: {fileID: 5273636447198683800, guid: ed938cc29002fc144a13c67ce7871636, type: 3}
       propertyPath: m_LocalPosition.z
