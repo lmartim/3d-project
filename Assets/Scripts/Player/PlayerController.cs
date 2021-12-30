@@ -26,9 +26,14 @@ public class PlayerController : MonoBehaviour//, IDamageable
     [Header("Flash")]
     public List<FlashColor> flashColors;
 
+    [Header("Origin")]
+    public GameObject spawnPoint;
+
     private float _vSpeed = 0f;
 
     private bool _isAlive = true;
+
+    private bool _isFalling = false;
 
     private void OnValidate()
     {
@@ -73,9 +78,18 @@ public class PlayerController : MonoBehaviour//, IDamageable
         _vSpeed -= gravity * Time.deltaTime;
         speedVector.y = _vSpeed;
 
-        characterController.Move(speedVector * Time.deltaTime);
+        if (!_isFalling)
+            characterController.Move(speedVector * Time.deltaTime);
 
         animator.SetBool("Run", isWalking);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Abyss")
+        {
+           StartCoroutine(FallingOnAbyss());
+        }
     }
 
     private void Jump()
@@ -89,7 +103,6 @@ public class PlayerController : MonoBehaviour//, IDamageable
             }
         }
     }
-
 
     #region LIFE
     public void Damage(HealthBase h)
@@ -125,11 +138,27 @@ public class PlayerController : MonoBehaviour//, IDamageable
     }
     #endregion
 
+    IEnumerator FallingOnAbyss()
+    {
+        _isFalling = true;
+        Respawn();
+        healthBase.Damage(2f);
+
+        yield return new WaitForSeconds(.5f);
+
+        _isFalling = false;
+    }
+
     public void Respawn()
     {
         if (CheckpointManager.Instance.HasCheckpoint())
         {
             transform.position = CheckpointManager.Instance.PlaceToRespawnPlayer();
+        }
+        else if (spawnPoint != null)
+        {
+            transform.position = spawnPoint.transform.position;
+
         }
     }
 
