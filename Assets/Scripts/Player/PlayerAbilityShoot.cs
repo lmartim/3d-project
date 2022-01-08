@@ -43,6 +43,7 @@ public class PlayerAbilityShoot : PlayerAbilityBase
 
     private void StartShoot()
     {
+        ShakeCamera.Instance.Shake();
         _currentGun.StartShoot();
     }
 

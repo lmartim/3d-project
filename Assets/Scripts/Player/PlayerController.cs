@@ -108,6 +108,7 @@ public class PlayerController : MonoBehaviour//, IDamageable
     public void Damage(HealthBase h)
     {
         flashColors.ForEach(i => i.Flash());
+        FXManager.Instance.ChangeVignette();
     }
 
     public void Damage(float damage, Vector3 dir)
