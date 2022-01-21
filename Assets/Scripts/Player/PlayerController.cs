@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Core.StateMachine;
+using Core.Singleton;
 
-public class PlayerController : MonoBehaviour//, IDamageable
+public class PlayerController : Singleton<PlayerController>//, IDamageable
 {
     [Header("Components")]
     public Animator animator;
@@ -40,8 +40,9 @@ public class PlayerController : MonoBehaviour//, IDamageable
         if (healthBase == null) healthBase = GetComponent<HealthBase>();
     }
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         OnValidate();
 
         healthBase.OnDamage += Damage;

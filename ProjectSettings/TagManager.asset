@@ -8,6 +8,8 @@ TagManager:
   - Boss
   - Abyss
   - UIGunUpdater
+  - UI_KeyToActivateItem
+  - UI_ItemKey
   layers:
   - Default
   - TransparentFX
