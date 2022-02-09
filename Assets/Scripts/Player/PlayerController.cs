@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Core.Singleton;
+using Skin;
 
 public class PlayerController : Singleton<PlayerController>//, IDamageable
 {
@@ -28,6 +29,9 @@ public class PlayerController : Singleton<PlayerController>//, IDamageable
 
     [Header("Origin")]
     public GameObject spawnPoint;
+
+    [Header("Skins")]
+    [SerializeField] private SkinChanger _skinChanger;
 
     private float _vSpeed = 0f;
 
@@ -167,5 +171,34 @@ public class PlayerController : Singleton<PlayerController>//, IDamageable
     private void TurnOnColliders() 
     {
         colliders.ForEach(i => i.enabled = true);
+    }
+    
+    public void ChangeSpeed(float newSpeed, float duration)
+    {
+        StartCoroutine(ChangeSpeedCoroutine(newSpeed, duration));
+    }
+
+    IEnumerator ChangeSpeedCoroutine(float newSpeed, float duration)
+    {
+        var defaultSpeed = speed;
+        speed = newSpeed;
+
+        yield return new WaitForSeconds(duration);
+
+        speed = defaultSpeed;
+    }
+
+    public void ChangeTexture(SkinSetup setup, float duration)
+    {
+        StartCoroutine(ChangeTextureCoroutine(setup, duration));
+    }
+
+    IEnumerator ChangeTextureCoroutine(SkinSetup setup, float duration)
+    {
+        _skinChanger.ChangeTexture(setup);
+
+        yield return new WaitForSeconds(duration);
+
+        _skinChanger.ResetTexture();
     }
 }
