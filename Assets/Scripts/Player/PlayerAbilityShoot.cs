@@ -10,6 +10,8 @@ public class PlayerAbilityShoot : PlayerAbilityBase
 
     private GunBase _currentGun;
 
+    public FlashColor _flashColor;
+
     [Header("Guns")]
     public List<GunBase> guns;
 
@@ -45,6 +47,8 @@ public class PlayerAbilityShoot : PlayerAbilityBase
     {
         ShakeCamera.Instance.Shake();
         _currentGun.StartShoot();
+
+        _flashColor?.Flash();
     }
 
     private void CancelShoot()

@@ -33,6 +33,11 @@ public class PlayerController : Singleton<PlayerController>//, IDamageable
     [Header("Skins")]
     [SerializeField] private SkinChanger _skinChanger;
 
+    [Header("Particles")]
+    [SerializeField] private ParticleSystem _walkParticles;
+    [SerializeField] private ParticleSystem _jumpParticles;
+
+
     private float _vSpeed = 0f;
 
     private bool _isAlive = true;
@@ -78,6 +83,8 @@ public class PlayerController : Singleton<PlayerController>//, IDamageable
             {
                 animator.speed = 1f;
             }
+
+            _walkParticles.Play();
         }
 
         _vSpeed -= gravity * Time.deltaTime;
@@ -105,6 +112,7 @@ public class PlayerController : Singleton<PlayerController>//, IDamageable
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 _vSpeed = jumpSpeed;
+                _jumpParticles.Play();
             }
         }
     }
