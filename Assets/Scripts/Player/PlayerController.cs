@@ -58,6 +58,21 @@ public class PlayerController : Singleton<PlayerController>//, IDamageable
         healthBase.OnKill += OnKill;
     }
 
+    private void Start()
+    {
+        Invoke(nameof(LoadPositionFromSave), .1f);
+    }
+
+    private void LoadPositionFromSave()
+    {
+        var setupLastPosition = SaveManager.Instance.Setup.lastPosition;
+
+        if (setupLastPosition != Vector3.zero) {
+            transform.position = setupLastPosition;
+            _isFalling = true;
+        }
+    }
+
     private void Update()
     {
         if (!_isAlive) return;

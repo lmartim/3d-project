@@ -33,6 +33,13 @@ namespace Items
         private void Start()
         {
             Reset();
+            Invoke(nameof(LoadItemsFromSave), .3f);
+        }
+
+        private void LoadItemsFromSave()
+        {
+            AddByType(ItemType.COIN, (int)SaveManager.Instance.Setup.coins);
+            AddByType(ItemType.LIFE_PACK, (int)SaveManager.Instance.Setup.health);
         }
 
         private void Reset()
