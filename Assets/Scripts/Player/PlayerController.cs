@@ -60,7 +60,8 @@ public class PlayerController : Singleton<PlayerController>//, IDamageable
 
     private void Start()
     {
-        Invoke(nameof(LoadPositionFromSave), .1f);
+        if (SaveManager.Instance.Setup != null)
+            Invoke(nameof(LoadPositionFromSave), .1f);
     }
 
     private void LoadPositionFromSave()

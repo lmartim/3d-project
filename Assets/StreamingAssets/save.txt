@@ -1,11 +1,11 @@
 {
-    "lastLevel": 0,
+    "lastLevel": 1,
     "playerName": "Lucas",
-    "coins": 0.0,
+    "coins": 4.0,
     "health": 0.0,
     "lastPosition": {
         "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
+        "y": -0.03892815113067627,
+        "z": -2.9603371620178224
     }
 }

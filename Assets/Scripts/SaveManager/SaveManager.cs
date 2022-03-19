@@ -39,7 +39,8 @@ public class SaveManager : Singleton<SaveManager>
 
     private void Start()
     {
-        Invoke(nameof(LoadFile), 1f);
+        if (_saveSetup != null)
+            Invoke(nameof(LoadFile), 1f);
     }
 
     public void CreateNewSave()

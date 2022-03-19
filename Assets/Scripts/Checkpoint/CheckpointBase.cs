@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CheckpointBase : MonoBehaviour
 {
+    public SFXType sfxType;
+
     public MeshRenderer meshRenderer;
 
     private bool _checkpointActived = false;
@@ -41,5 +43,6 @@ public class CheckpointBase : MonoBehaviour
         CheckpointManager.Instance.SaveCheckpoint(key);
 
         _checkpointActived = true;
+        SFXPool.Instance.Play(sfxType);
     }
 }

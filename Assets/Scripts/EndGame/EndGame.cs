@@ -16,7 +16,11 @@ public class EndGame : MonoBehaviour
     private void Awake()
     {
         endGameObjects.ForEach(i => i.SetActive(false));
-        _setupLastLevel = SaveManager.Instance.Setup.lastLevel;
+
+        if (_setupLastLevel > 0)
+        {
+            _setupLastLevel = SaveManager.Instance.Setup.lastLevel;
+        }
     }
 
     private void OnTriggerEnter(Collider other)

@@ -9,6 +9,8 @@ namespace Enemy
 {
     public class EnemyBase : MonoBehaviour, IDamageable
     {
+        public SFXType sfxType;
+
         public Collider enemyCollider;
         public FlashColor flashColor;
 
@@ -80,6 +82,8 @@ namespace Enemy
         public void OnDamage(float f)
         {
             if (flashColor != null) flashColor.Flash();
+
+            SFXPool.Instance.Play(sfxType);
 
             _currentLife -= f;
 

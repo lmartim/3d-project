@@ -4941,13 +4941,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a011893c48cb4434d95d8fba194aab29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sfxType: 3
   enemyCollider: {fileID: 6268937592824403351}
   flashColor: {fileID: 6684712539971717432}
   startLife: 10
+  lookAtPlayer: 0
   _animationBase: {fileID: 6268937592824403354}
   startAnimationDuration: 0.2
   startAnimationEase: 27
   startWithBornAnimation: 1
+  OnKillEvent:
+    m_PersistentCalls:
+      m_Calls: []
   enemyParticleSystem: {fileID: 6268937592531357600}
   enemyParticleMaterial: {fileID: 2100000, guid: 0e08361659873684abbe3c63c2427e91, type: 2}
 --- !u!65 &6268937592824403351

@@ -33,7 +33,9 @@ namespace Items
         private void Start()
         {
             Reset();
-            Invoke(nameof(LoadItemsFromSave), .3f);
+
+            if (SaveManager.Instance.Setup != null)
+                Invoke(nameof(LoadItemsFromSave), .3f);
         }
 
         private void LoadItemsFromSave()
